@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.0;netcoreapp2.2;netcoreapp2.1;netstandard2.0;net452;net462;net47;net472</TargetFrameworks>
@@ -13,9 +13,10 @@
 		<PackageLicenseUrl>https://github.com/Elskom/BlowFish/blob/master/LICENSE</PackageLicenseUrl>
 		<Copyright>Copyright (c) 2018-2019</Copyright>
 		<Description>A simple C# blowfish encryption library.</Description>
-		<PackageReleaseNotes>Added .NET Core 3.0 and 2.2 to target frameworks.</PackageReleaseNotes>
-		<Version>1.0.1</Version>
+		<PackageReleaseNotes>Added reference assemblies.</PackageReleaseNotes>
+		<Version>1.0.2</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -50,18 +51,18 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.6.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="IDisposableAnalyzers" Version="2.0.6">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.2">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.6.2">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="IDisposableAnalyzers" Version="2.0.6">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
