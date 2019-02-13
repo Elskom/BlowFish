@@ -79,7 +79,7 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="System.Runtime" Condition="'$(TargetFramework)' != 'net40'">
-			<Version>4.3.0</Version>
+			<Version>4.3.1</Version>
 		</PackageReference>
 		<PackageReference Include="System.Security.Cryptography.Csp" Condition="!$(TargetFramework.StartsWith('net45')) AND '$(TargetFramework)' != 'net40'">
 			<Version>4.3.0</Version>
