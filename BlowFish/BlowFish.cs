@@ -117,7 +117,7 @@ namespace Elskom.Generic.Libs
         {
             if (!this.iVSet)
             {
-                this.SetRandomIV();
+                _ = this.SetRandomIV();
             }
 
             return ByteToHex(this.initVector) + ByteToHex(this.EncryptCBC(Encoding.ASCII.GetBytes(pt)));
@@ -421,7 +421,7 @@ namespace Elskom.Generic.Libs
             var s = new StringBuilder();
             foreach (var b in bytes)
             {
-                s.Append(b.ToString("x2"));
+                _ = s.Append(b.ToString("x2"));
             }
 
             return s.ToString();
@@ -715,7 +715,7 @@ namespace Elskom.Generic.Libs
                 this.xlPar = this.Round(this.xlPar, this.xrPar, i + 2);
             }
 
-            this.xrPar = this.xrPar ^ this.bfP[17];
+            this.xrPar ^= this.bfP[17];
 
             // swap the blocks
             var swap = this.xlPar;
@@ -735,7 +735,7 @@ namespace Elskom.Generic.Libs
                 this.xlPar = this.Round(this.xlPar, this.xrPar, i - 1);
             }
 
-            this.xrPar = this.xrPar ^ this.bfP[0];
+            this.xrPar ^= this.bfP[0];
 
             // swap the blocks
             var swap = this.xlPar;

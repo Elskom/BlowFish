@@ -18,6 +18,9 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
 		<NoWarn>$(NoWarn);NU5104;NU5118</NoWarn>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>Elskom.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>false</DelaySign>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -52,6 +55,9 @@
 		<TfmSpecificPackageFile Include="$(ProjectDir)/$(ProjectName).ruleset">
 			<PackagePath>src/$(ProjectName)/$(ProjectName).ruleset</PackagePath>
 		</TfmSpecificPackageFile>
+		<TfmSpecificPackageFile Include="$(ProjectDir)/Elskom.snk">
+			<PackagePath>src/$(ProjectName)/Elskom.snk</PackagePath>
+		</TfmSpecificPackageFile>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -82,11 +88,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.1-rc.108">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.3">
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.4-beta1.19067.1">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
