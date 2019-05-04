@@ -42,6 +42,11 @@ namespace Elskom.Generic.Libs
         /// <param name="hexKey">Cipher key as a hex string.</param>
         public BlowFish(string hexKey)
         {
+            if (string.IsNullOrEmpty(hexKey))
+            {
+                throw new ArgumentException("message", nameof(hexKey));
+            }
+
             this.randomSource = new RNGCryptoServiceProvider();
             this.SetupKey(HexToByte(hexKey));
         }
@@ -52,6 +57,11 @@ namespace Elskom.Generic.Libs
         /// <param name="cipherKey">Cipher key as a byte array.</param>
         public BlowFish(byte[] cipherKey)
         {
+            if (cipherKey == null)
+            {
+                throw new ArgumentNullException(nameof(cipherKey));
+            }
+
             this.randomSource = new RNGCryptoServiceProvider();
             this.SetupKey(cipherKey);
         }
@@ -102,6 +112,16 @@ namespace Elskom.Generic.Libs
         /// <param name="iv">8 bit block 2.</param>
         public static void XorBlock(ref byte[] block, byte[] iv)
         {
+            if (block == null)
+            {
+                throw new ArgumentNullException(nameof(block));
+            }
+
+            if (iv == null)
+            {
+                throw new ArgumentNullException(nameof(iv));
+            }
+
             for (var i = 0; i < block.Length; i++)
             {
                 block[i] ^= iv[i % iv.Length];
@@ -130,6 +150,11 @@ namespace Elskom.Generic.Libs
         /// <returns>Plaintext.</returns>
         public string DecryptCBC(string ct)
         {
+            if (string.IsNullOrEmpty(ct))
+            {
+                throw new ArgumentException("message", nameof(ct));
+            }
+
             this.IV = HexToByte(ct.Substring(0, 16));
             return Encoding.ASCII.GetString(this.DecryptCBC(HexToByte(ct.Substring(16)))).Replace("\0", string.Empty);
         }
@@ -681,26 +706,28 @@ namespace Elskom.Generic.Libs
         /// <param name="block">64 bit buffer to receive the block.</param>
         private void GetBlock(ref byte[] block)
         {
-            var block1 = new byte[4];
-            var block2 = new byte[4];
             if (this.NonStandard)
             {
-                block1 = BitConverter.GetBytes(this.xrPar);
-                block2 = BitConverter.GetBytes(this.xlPar);
+                var block1 = BitConverter.GetBytes(this.xrPar);
+                var block2 = BitConverter.GetBytes(this.xlPar);
+
+                // join the block
+                Buffer.BlockCopy(block1, 0, block, 0, 4);
+                Buffer.BlockCopy(block2, 0, block, 4, 4);
             }
             else
             {
-                block1 = BitConverter.GetBytes(this.xlPar);
-                block2 = BitConverter.GetBytes(this.xrPar);
+                var block1 = BitConverter.GetBytes(this.xlPar);
+                var block2 = BitConverter.GetBytes(this.xrPar);
 
                 // GetBytes returns the bytes in reverse order
                 Array.Reverse(block1);
                 Array.Reverse(block2);
-            }
 
-            // join the block
-            Buffer.BlockCopy(block1, 0, block, 0, 4);
-            Buffer.BlockCopy(block2, 0, block, 4, 4);
+                // join the block
+                Buffer.BlockCopy(block1, 0, block, 0, 4);
+                Buffer.BlockCopy(block2, 0, block, 4, 4);
+            }
         }
 
         /// <summary>
