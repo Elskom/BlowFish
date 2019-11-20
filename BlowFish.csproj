@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netstandard2.0;net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48</TargetFrameworks>
+		<TargetFrameworks>netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netstandard2.0;net40;net45;net451;net452;net46;net461;net462;net47;net471;net472</TargetFrameworks>
 		<AssemblyName>BlowFish</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<Company>Els_kom org.</Company>
@@ -63,8 +63,10 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
+    <!--
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<WarningsAsErrors />
+    -->
 		<OutputPath>bin\Any CPU\Debug\</OutputPath>
 		<DocumentationFile>bin\Any CPU\Debug\BlowFish.xml</DocumentationFile>
 		<DebugType>full</DebugType>
@@ -72,8 +74,10 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <!--
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<WarningsAsErrors />
+    -->
 		<OutputPath>bin\Any CPU\Release\</OutputPath>
 		<DocumentationFile>bin\Any CPU\Release\BlowFish.xml</DocumentationFile>
 		<DebugType>full</DebugType>
