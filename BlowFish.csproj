@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitBuildInfo" Version="0.25.0-preview-97517171">
+    <PackageReference Include="GitBuildInfo" Version="0.25.0-preview-97596234">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -96,7 +96,7 @@
 
   <ItemGroup Condition="!Exists('..\GitInformation\src\GitInformation\AraHaan.GitInformation.csproj') OR '$(SolutionName)' != 'build_all_packages'">
     <PackageReference Include="AraHaan.GitInformation">
-      <Version>1.0.2-preview-97526750</Version>
+      <Version>1.0.2-preview-97608530</Version>
     </PackageReference>
   </ItemGroup>
 
