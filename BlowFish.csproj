@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitBuildInfo" Version="0.24.0">
+    <PackageReference Include="GitBuildInfo" Version="0.25.0-preview-97517171">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -72,7 +72,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="IDisposableAnalyzers" Version="3.3.7">
+    <PackageReference Include="IDisposableAnalyzers" Version="3.3.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -96,7 +96,7 @@
 
   <ItemGroup Condition="!Exists('..\GitInformation\src\GitInformation\AraHaan.GitInformation.csproj') OR '$(SolutionName)' != 'build_all_packages'">
     <PackageReference Include="AraHaan.GitInformation">
-      <Version>1.0.2-preview-97172757</Version>
+      <Version>1.0.2-preview-97526750</Version>
     </PackageReference>
   </ItemGroup>
 
