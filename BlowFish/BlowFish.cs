@@ -7,9 +7,11 @@ namespace Elskom.Generic.Libs
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using Elskom.Generic.Libs.Properties;
 
     /// <summary>
     /// Blowfish encryption class.
@@ -44,7 +46,7 @@ namespace Elskom.Generic.Libs
         {
             if (string.IsNullOrEmpty(hexKey))
             {
-                throw new ArgumentException("message", nameof(hexKey));
+                throw new ArgumentNullException(nameof(hexKey));
             }
 
             this.randomSource = new RNGCryptoServiceProvider();
@@ -72,7 +74,7 @@ namespace Elskom.Generic.Libs
         /// <value>
         /// A value indicating whether this object is disposed or not.
         /// </value>
-        public bool IsDisposed { get; private set; } = false;
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Gets or sets initialization vector for CBC mode.
@@ -92,7 +94,7 @@ namespace Elskom.Generic.Libs
                 }
                 else
                 {
-                    throw new Exception("Invalid IV size.");
+                    throw new Exception(Resources.BlowFish_Invalid_IV_Size);
                 }
             }
         }
@@ -152,11 +154,15 @@ namespace Elskom.Generic.Libs
         {
             if (string.IsNullOrEmpty(ct))
             {
-                throw new ArgumentException("message", nameof(ct));
+                throw new ArgumentNullException(nameof(ct));
             }
 
             this.IV = HexToByte(ct.Substring(0, 16));
+#if NETCOREAPP
+            return Encoding.ASCII.GetString(this.DecryptCBC(HexToByte(ct.Substring(16)))).Replace("\0", string.Empty, StringComparison.Ordinal);
+#else
             return Encoding.ASCII.GetString(this.DecryptCBC(HexToByte(ct.Substring(16)))).Replace("\0", string.Empty);
+#endif
         }
 
         /// <summary>
@@ -165,7 +171,15 @@ namespace Elskom.Generic.Libs
         /// </summary>
         /// <param name="ct">Ciphertext data to decrypt.</param>
         /// <returns>Plaintext.</returns>
-        public byte[] DecryptCBC(byte[] ct) => this.Crypt_CBC(ct, true);
+        public byte[] DecryptCBC(byte[] ct)
+        {
+            if (ct == null)
+            {
+                throw new ArgumentNullException(nameof(ct));
+            }
+
+            return this.Crypt_CBC(ct, true);
+        }
 
         /// <summary>
         /// Encrypts a byte array in CBC mode.
@@ -173,51 +187,80 @@ namespace Elskom.Generic.Libs
         /// </summary>
         /// <param name="pt">Plaintext data to encrypt.</param>
         /// <returns>Ciphertext.</returns>
-        public byte[] EncryptCBC(byte[] pt) => this.Crypt_CBC(pt, false);
+        public byte[] EncryptCBC(byte[] pt)
+        {
+            if (pt == null)
+            {
+                throw new ArgumentNullException(nameof(pt));
+            }
+
+            return this.Crypt_CBC(pt, false);
+        }
 
         /// <summary>
         /// Encrypt a string in ECB mode.
         /// </summary>
         /// <param name="pt">Plaintext to encrypt as ascii string.</param>
         /// <returns>hex value of encrypted data.</returns>
-        public string EncryptECB(string pt) => ByteToHex(this.EncryptECB(Encoding.ASCII.GetBytes(pt)));
+        public string EncryptECB(string pt)
+            => ByteToHex(this.EncryptECB(Encoding.ASCII.GetBytes(pt)));
 
         /// <summary>
         /// Decrypts a string (ECB).
         /// </summary>
         /// <param name="ct">hHex string of the ciphertext.</param>
         /// <returns>Plaintext ascii string.</returns>
-        public string DecryptECB(string ct) => Encoding.ASCII.GetString(this.Decrypt_ECB(HexToByte(ct))).Replace("\0", string.Empty);
+        public string DecryptECB(string ct)
+        {
+            if (string.IsNullOrEmpty(ct))
+            {
+                throw new ArgumentNullException(nameof(ct));
+            }
+
+#if NETCOREAPP
+            return Encoding.ASCII.GetString(this.Decrypt_ECB(HexToByte(ct))).Replace("\0", string.Empty, StringComparison.Ordinal);
+#else
+            return Encoding.ASCII.GetString(this.Decrypt_ECB(HexToByte(ct))).Replace("\0", string.Empty);
+#endif
+        }
 
         /// <summary>
         /// Encrypts a byte array in ECB mode.
         /// </summary>
         /// <param name="pt">Plaintext data.</param>
         /// <returns>Ciphertext bytes.</returns>
-        public byte[] EncryptECB(byte[] pt) => this.Crypt_ECB(pt, false);
+        public byte[] EncryptECB(byte[] pt)
+        {
+            if (pt == null)
+            {
+                throw new ArgumentNullException(nameof(pt));
+            }
+
+            return this.Crypt_ECB(pt, false);
+        }
 
         /// <summary>
         /// Decrypts a byte array.
         /// </summary>
         /// <param name="cipherText">Ciphertext byte array.</param>
         /// <param name="mode">Cipher mode.</param>
-        /// <returns>Plaintext or null if moode is not CipherMode.ECB.</returns>
+        /// <returns>Plaintext or null if mode is not CipherMode.ECB.</returns>
         public byte[] Decrypt(byte[] cipherText, CipherMode mode)
-        {
-            switch (mode)
+            => mode switch
             {
-                case CipherMode.ECB:
-                    return this.Decrypt_ECB(cipherText);
-
-                default:
-                    return null;
-            }
-        }
+                CipherMode.ECB => this.Decrypt_ECB(cipherText),
+                CipherMode.CBC => null,
+                CipherMode.CFB => null,
+                CipherMode.CTS => null,
+                CipherMode.OFB => null,
+                _ => null,
+            };
 
         /// <summary>
         /// Cleans up the Blowfish items.
         /// </summary>
-        public void Dispose() => this.Dispose(true);
+        public void Dispose()
+            => this.Dispose(true);
 
         /// <summary>
         /// Creates and sets a random initialization vector.
@@ -429,16 +472,20 @@ namespace Elskom.Generic.Libs
         };
 
         // gets the first byte in a uint
-        private static byte WordByte0(uint w) => (byte)((w / 256 / 256 / 256) % 256);
+        private static byte WordByte0(uint w)
+            => (byte)((w / 256 / 256 / 256) % 256);
 
         // gets the second byte in a uint
-        private static byte WordByte1(uint w) => (byte)((w / 256 / 256) % 256);
+        private static byte WordByte1(uint w)
+            => (byte)((w / 256 / 256) % 256);
 
         // gets the third byte in a uint
-        private static byte WordByte2(uint w) => (byte)((w / 256) % 256);
+        private static byte WordByte2(uint w)
+            => (byte)((w / 256) % 256);
 
         // gets the fourth byte in a uint
-        private static byte WordByte3(uint w) => (byte)(w % 256);
+        private static byte WordByte3(uint w)
+            => (byte)(w % 256);
 
         // converts a byte array to a hex string
         private static string ByteToHex(byte[] bytes)
@@ -446,7 +493,7 @@ namespace Elskom.Generic.Libs
             var s = new StringBuilder();
             foreach (var b in bytes)
             {
-                _ = s.Append(b.ToString("x2"));
+                _ = s.Append(b.ToString("x2", CultureInfo.InvariantCulture));
             }
 
             return s.ToString();
@@ -522,7 +569,7 @@ namespace Elskom.Generic.Libs
             this.key = new byte[cipherKey.Length]; // 448 bits
             if (cipherKey.Length > 56)
             {
-                throw new Exception("Key too long. 56 bytes required.");
+                throw new Exception(Resources.BlowFish_Key_Too_Long);
             }
 
             Buffer.BlockCopy(cipherKey, 0, this.key, 0, cipherKey.Length);
@@ -612,7 +659,7 @@ namespace Elskom.Generic.Libs
         {
             if (!this.iVSet)
             {
-                throw new Exception("IV not set.");
+                throw new Exception(Resources.BlowFish_IV_Not_Set);
             }
 
             var paddedLen = text.Length % 8 == 0 ? text.Length : text.Length + 8 - (text.Length % 8);

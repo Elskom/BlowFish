@@ -1,0 +1,17 @@
+name: .NET Core (build pull request)
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2.1.0
+    - name: .NET core build
+      uses: actions/setup-dotnet@v1.4.0
+      with:
+        dotnet-version: 5.0.100-preview.4.20202.8
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
