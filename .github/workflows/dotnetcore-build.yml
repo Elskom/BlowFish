@@ -1,6 +1,8 @@
 name: .NET Core (build & publish pre-release)
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
 
 jobs:
   build:
