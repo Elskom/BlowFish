@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitBuildInfo" Version="0.25.0-preview-99629080">
+    <PackageReference Include="GitBuildInfo" Version="0.25.0-preview-99680043">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
