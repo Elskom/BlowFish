@@ -6,6 +6,7 @@
 namespace Elskom.Generic.Libs
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -127,6 +128,30 @@ namespace Elskom.Generic.Libs
             for (var i = 0; i < block.Length; i++)
             {
                 block[i] ^= iv[i % iv.Length];
+            }
+        }
+
+        /// <summary>
+        /// XoR encrypts two 8 bit blocks.
+        /// </summary>
+        /// <param name="block">8 bit block 1.</param>
+        /// <param name="iv">8 bit block 2.</param>
+        public static void XorBlock(Stream block, byte[] iv)
+        {
+            if (block == null)
+            {
+                throw new ArgumentNullException(nameof(block));
+            }
+
+            if (block is MemoryStream ms)
+            {
+                var _block = new byte[ms.Length];
+                Array.Copy(ms.GetBuffer(), _block, ms.GetBuffer().LongLength);
+                XorBlock(ref _block, iv);
+
+                // clear the old data then copy the new data to the stream.
+                Array.Clear(ms.GetBuffer(), 0, _block.Length);
+                Array.Copy(_block, 0, ms.GetBuffer(), 0, _block.Length);
             }
         }
 
