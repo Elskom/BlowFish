@@ -6,3 +6,5 @@
 ![Build Status](https://github.com/Elskom/BlowFish/workflows/.NET%20Core%20%28build20pull%20request%29/badge.svg)
 
 A simple C# blowfish encryption library.
+
+MOVED TO https://github.com/Elskom/Sdk/
